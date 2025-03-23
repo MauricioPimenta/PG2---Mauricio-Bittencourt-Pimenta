@@ -1,0 +1,71 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Arquivo: 02-Referencial_Teorico.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Modelagem de Robôs Móveis Diferenciais}
+Robôs móveis podem ser classificados de acordo com o tipo de locomoção e os atuadores. Dentre os mais comuns estão os \textit{robôs diferenciais}, que se deslocam em um plano através de duas rodas motoras fixadas no mesmo eixo, geralmente acompanhadas de rodas livres (rodízios) para equilíbrio. Cada roda motriz é acionada por um motor independente, permitindo controlar a velocidade de cada lado separadamente. Ao comandar velocidades iguais nas duas rodas, o robô desloca-se em linha reta; ao aplicar velocidades de sentidos opostos, o robô realiza uma rotação em torno do seu próprio eixo \cite{Sarcinelli-Filho2023_2}. Esse tipo de acionamento diferencial é amplamente utilizado em robótica móvel devido à sua simplicidade mecânica e efetividade no controle de movimento.
+
+\subsection{Modelagem Cinemática}
+A modelagem cinemática descreve o movimento do robô sem considerar as forças envolvidas, focando nas relações geométricas entre velocidades e posições. No caso do robô diferencial (ou modelo de uniciclo), a configuração do robô pode ser descrita por sua posição $(x,y)$ no plano e sua orientação $\theta$ em relação a um referencial global. As velocidades de translação $v_L$ e $v_R$ das rodas esquerda e direita, respectivamente, geram uma velocidade linear $u$ e uma velocidade angular $\omega$ do robô, definidas por
+\begin{equation}\label{eq:u}
+    u \;=\; \frac{v_L + v_R}{2},
+\end{equation}
+\begin{equation}\label{eq:omega}
+    \omega \;=\; \frac{v_R - v_L}{D},
+\end{equation}
+onde $D$ é a distância entre as rodas (bitola do robô). Conforme destacado em \cite{Sarcinelli-Filho2023_2}, a velocidade angular $\omega$ é positiva no sentido anti-horário, considerando que $v_R$ e $v_L$ são as velocidades das rodas direita e esquerda, respectivamente.
+
+Com base nessas grandezas, o modelo cinemático do robô diferencial pode ser representado pelas seguintes equações de movimento:
+\begin{align}
+    \dot{x} &= u \cos\theta, \\
+    \dot{y} &= u \sin\theta, \\
+    \dot{\theta} &= \omega.
+\end{align}
+Essas equações descrevem o modelo unicíclo, em que o estado do robô é definido pela sua posição $(x, y)$ e pela orientação $\theta$. Devido à configuração diferencial, não há componente de velocidade no sentido lateral do robô, o que caracteriza o sistema como \textit{não-holônomo} \cite{book:siegwart2011}.
+
+A Figura~\ref{fig:diferencial_cinematica} ilustra o modelo cinemático de um robô diferencial, destacando as velocidades das rodas e as velocidades resultantes $u$ e $\omega$.
+
+\begin{figure}[htb]
+    \centering
+    % Insira aqui a figura do modelo cinemático do robô diferencial.
+    \includegraphics[width=0.7\textwidth]{figuras/diferencial_cinematica.png}
+    \caption{Esquema cinemático de um robô móvel diferencial. As velocidades $v_L$ e $v_R$ das rodas geram, respectivamente, a velocidade linear $u$ e a velocidade angular $\omega$. Fonte: Adaptado de \cite{Sarcinelli-Filho2023_2}.}
+    \label{fig:diferencial_cinematica}
+\end{figure}
+
+\subsection{Modelagem Dinâmica}
+A modelagem dinâmica considera as forças e os torques atuantes para descrever o movimento do robô. Em um robô diferencial, as entradas de controle no nível dinâmico são os torques (ou forças) aplicados pelas rodas motrizes. Suponha que $m$ seja a massa total do robô e $I$ seu momento de inércia em torno do eixo vertical. Seja $r$ o raio de cada roda, e denotando por $\tau_L$ e $\tau_R$ os torques aplicados nas rodas esquerda e direita, um modelo simplificado pode ser expresso por:
+\begin{equation}\label{eq:dinamica}
+    m\,\dot{u} = \frac{\tau_L + \tau_R}{r}, \qquad
+    I\,\dot{\omega} = \frac{D}{2r}\,(\tau_R - \tau_L).
+\end{equation}
+Neste modelo, $\frac{\tau_L + \tau_R}{r}$ representa a força resultante que acelera o robô, e $\frac{D}{2r}(\tau_R - \tau_L)$ representa o torque resultante, que gera a aceleração angular \cite{Martins2008}. Apesar de simplificado, esse modelo captura a essência da dinâmica do robô diferencial e serve de base para o projeto de controladores no nível dinâmico.
+
+\subsection{Controle de Robôs Diferenciais}
+O controle de um robô móvel diferencial visa comandar as velocidades linear e angular para que o robô siga uma trajetória desejada ou atinja uma posição-alvo. Devido à não-holonomicidade do sistema, métodos de controle não-lineares são frequentemente empregados. Geralmente, o controle pode ser dividido em duas camadas: o controle cinemático (nível de velocidade) e o controle dinâmico (nível de torque).
+
+\subsubsection{Controle Cinemático}
+No controle cinemático, assume-se que é possível impor diretamente as velocidades $u$ e $\omega$. Com base no modelo cinemático, podem-se definir variáveis de erro, como:
+\[
+e_x = x_d - x, \quad e_y = y_d - y, \quad e_\theta = \theta_d - \theta,
+\]
+onde $(x_d, y_d, \theta_d)$ é a pose desejada do robô. Um controlador clássico consiste em definir as entradas desejadas da seguinte forma:
+\begin{equation}\label{eq:controle_cinematico}
+    u = v_d \cos e_\theta + k_1 e_x, \qquad \omega = \omega_d + k_2 e_\theta + k_3 v_d \sin e_\theta,
+\end{equation}
+onde $k_1$, $k_2$ e $k_3$ são ganhos positivos e $v_d$, $\omega_d$ são as velocidades de referência provenientes de um planejador de trajetórias. Esse tipo de controlador é bastante utilizado para estabilização de erro e seguimento de trajetórias \cite{Kanayama1990}.
+
+\subsubsection{Controle Dinâmico}
+O controle dinâmico atua no nível dos torques aplicados pelas rodas, considerando a inércia e outras características do robô. O objetivo é fazer com que as velocidades reais se aproximem das velocidades desejadas definidas no controlador cinemático. Uma abordagem comum é utilizar controladores PID para cada motor, compensando os efeitos da dinâmica do sistema. Alternativamente, métodos mais sofisticados, como controle adaptativo ou controle preditivo (MPC), podem ser empregados para lidar com incertezas e não-linearidades \cite{Harasim2016}.
+
+Em resumo, o controle de robôs diferenciais geralmente é implementado em dois laços:
+\begin{enumerate}
+    \item \textbf{Laço externo (cinemático):} Calcula as velocidades desejadas $u$ e $\omega$ com base no erro de posição e orientação.
+    \item \textbf{Laço interno (dinâmico):} Converte as velocidades desejadas em comandos de torque ($\tau_L$ e $\tau_R$) que compensam a dinâmica do robô.
+\end{enumerate}
+
+Essa estratégia hierárquica permite uma implementação modular e robusta, onde cada camada é projetada de acordo com as características específicas do robô. Quando bem projetado, esse esquema garante a estabilidade do erro e a convergência da trajetória desejada \cite{Samson1995}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Fim do arquivo 02-Referencial_Teorico.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
