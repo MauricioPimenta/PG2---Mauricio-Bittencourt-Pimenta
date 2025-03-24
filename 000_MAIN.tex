@@ -48,11 +48,9 @@
 %\usepackage{subfloat}
 \usepackage{subcaption}
 
-\usepackage{tikz} % serve para desenhar diretamente no LaTeX
-
 \usepackage{physics}
 \usepackage{amsmath}
-\usepackage{tikz}
+\usepackage{tikz} % serve para desenhar diretamente no LaTeX
 \usepackage{mathdots}
 \usepackage{yhmath}
 \usepackage{cancel}
@@ -70,6 +68,7 @@
 \usetikzlibrary{shadows.blur}
 \usetikzlibrary{shapes}
 
+\usepackage{pgf}    % To use images exported by matplotlib as .pgf
 
 
 
@@ -122,8 +121,8 @@
 \usepackage{amsfonts} %a dicionar NumberSets 
 
 % >>> Comandos para aspas simples e duplas
-\newcommand{\ASPASIMPLE}[1]{`#1'} %ASPAS SIMPLES
-\newcommand{\ASPADUPLA}[1]{``#1''} %ASPAS DOBLES
+\newcommand{\ASPASIMPLES}[1]{`#1'} %ASPAS SIMPLES
+\newcommand{\ASPASDUPLAS}[1]{``#1''} %ASPAS DOBLES
 
 \usepackage{soul} % para tachar palabras
 
@@ -264,11 +263,11 @@
 % --------------------------------------------------- %
 %		    Dados do autor/banca/data	      	  	  %	
 % --------------------------------------------------- %
-\newcommand{\TituloDoTCC}{\uppercase{Desenvolvimento de Algoritmos de Planejamento e Controle para Navegação autônoma de Robôs Móveis em Tarefas Cooperativas de Mapeamento}}
+\newcommand{\TituloDoTCC}{\uppercase{Desenvolvimento de Algoritmos de Planejamento e Controle para Navegação autônoma de Robôs Móveis em Tarefas de Mapeamento}}
 \newcommand{\NomeDeAutor}{Maurício Bittencourt Pimenta}
 \newcommand{\NomeOrientador}{Prof. Dr. Daniel Khede Dourado Villa}
 \newcommand{\NomeCoorientador}{Prof. Dr. Mário Sarcinelli Filho}
-\newcommand{\DataApresentacao}{Setembro/2024}
+\newcommand{\DataApresentacao}{Março/2025}
 
 % --------------------------------------------------- %
 %		Informações para personalização da capa		  %
@@ -401,9 +400,9 @@
 %%%%%%%%%%%%%  A %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%  B %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%  C %%%%%%%%%%%%%%%
-\item[CNN] \textit{Convolutional Neural Network}
+% \item[CNN] \textit{Convolutional Neural Network}
 %%%%%%%%%%%%%  D %%%%%%%%%%%%%%%
-\item [DL] \textit{Deep Learning}
+% \item [DL] \textit{Deep Learning}
 %%%%%%%%%%%%%  E %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%  F %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%  G %%%%%%%%%%%%%%%
@@ -417,7 +416,7 @@
 \item[LAB-AIR] Laboratório de Automação Inteligente e Robótica
 \item[LiDAR] \textit{Light Detection And Ranging}
 %%%%%%%%%%%%%  M %%%%%%%%%%%%%%%
-\item[ML] \textit{Machine Learning}
+% \item[ML] \textit{Machine Learning}
 %%%%%%%%%%%%%  N %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%  O %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%  P %%%%%%%%%%%%%%%
@@ -425,7 +424,7 @@
 %%%%%%%%%%%%%  R %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%  S %%%%%%%%%%%%%%%
 \item[SLAM] \textit{Simultaneous Localization and Mapping}
-\item[SGD] \textit{Stochastic Gradient Descent}
+% \item[SGD] \textit{Stochastic Gradient Descent}
 %%%%%%%%%%%%%  T %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%  U %%%%%%%%%%%%%%%
 \item[UFES] Universidade Federal do Espírito Santo
@@ -465,6 +464,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \chapter{Referencial Teórico}
+\label{Cap02:Referencial_Teorico}
 \input{02-Referencial_Teorico/02-Referencial_Teorico}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -474,6 +474,7 @@
 \ifisTipoDocumento
     % PG
     \chapter[Metodologia e etapas de desenvolvimento]{Metodologia e etapas de desenvolvimento}
+    
     \input{PG1/Metodologia}
 \else
     % TCC
@@ -536,10 +537,10 @@
 \begin{anexosenv}
 %
 %% Imprime uma página indicando o início dos anexos
-\partanexos
-\input{ANEXOS/ANEXO_DicasEscrita}
-\input{ANEXOS/ANEXO_ComoReferenciar}
-\input{ANEXOS/ANEXO_MetodologiaDeepModels}
+% \partanexos
+% \input{ANEXOS/ANEXO_DicasEscrita}
+% \input{ANEXOS/ANEXO_ComoReferenciar}
+% \input{ANEXOS/ANEXO_MetodologiaDeepModels}
 \end{anexosenv}
 
 % --------------------------------------------------- %

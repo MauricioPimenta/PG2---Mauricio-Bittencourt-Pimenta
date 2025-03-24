@@ -1,31 +1,43 @@
+\label{Cap05}
 
-\begin{itemize}
-    \item \add{Síntese dos principais resultados e como eles atendem aos objetivos do projeto.}
-    \item \add{Reflexão sobre as vantagens e desvantagens da abordagem adotada (uso de biblioteca versus desenvolvimento completo do algoritmo).}
-    \item \add{Limitações do trabalho e sugestões para futuras melhorias ou pesquisas que possam superar os desafios encontrados.}
-\end{itemize}
+% \begin{itemize}
+%     \item \add{Síntese dos principais resultados e como eles atendem aos objetivos do projeto.}
+%     \item \add{Reflexão sobre as vantagens e desvantagens da abordagem adotada (uso de biblioteca versus desenvolvimento completo do algoritmo).}
+%     \item \add{Limitações do trabalho e sugestões para futuras melhorias ou pesquisas que possam superar os desafios encontrados.}
+% \end{itemize}
 
-\section{Conclusão}
+% \section{Conclusão}
 
-\txr{Escrever a conclusão segundo os itens indicados a seguir.}
+% \txr{Escrever a conclusão segundo os itens indicados a seguir.}
 
-\txr{OBJETIVO PRINCIPAL}
-O objetivo principal deste trabalho foi propor .....
-A técnica proposta é baseada fundamentalmente em ....
-Tal abordagem é motivada pelo ...
+% \txr{OBJETIVO PRINCIPAL}
+% O objetivo principal deste trabalho foi propor .....
+% A técnica proposta é baseada fundamentalmente em ....
+% Tal abordagem é motivada pelo ...
 
-\txr{DESCRIÇÃO DOS RESULTADOS}
-Como resultado, usando uma ...
+% \txr{DESCRIÇÃO DOS RESULTADOS}
+% Como resultado, usando uma ...
 
-\txr{INTERPRETAÇÃO DOS RESULTADOS}
-A partir dos valores das métricas de...
+% \txr{INTERPRETAÇÃO DOS RESULTADOS}
+% A partir dos valores das métricas de...
 
-\txr{CONTRIBUIÇÃO DO TRABALHO}
+% \txr{CONTRIBUIÇÃO DO TRABALHO}
 
-\section{Temas a serem pesquisados}
+% \section{Temas a serem pesquisados}
 
-\txr{Como trabalhos futuros: serão pesquisadas técnicas de ...}
-\txr{Além disso, futuramente ...}
+% \txr{Como trabalhos futuros: serão pesquisadas técnicas de ...}
+% \txr{Além disso, futuramente ...}
 
-\txr{Finalmente, com o intuito de ....}
+% \txr{Finalmente, com o intuito de ....}
 
+O presente trabalho apresentou o desenvolvimento de algoritmos de planejamento de rotas e controle de movimento para viabilizar a navegação autônoma de um robô móvel em tarefas de mapeamento. O principal objetivo foi explorar técnicas de controle cinemático e mapeamento a fim de permitir que o robô navegasse em um ambiente inicialmente desconhecido, localizando-se e construindo um mapa desse ambiente de forma autônoma. Para alcançar esse objetivo, foram implementados módulos essenciais: um controlador de trajetória para o robô móvel diferencial, rotinas de planejamento de trajetórias (definindo percursos a serem seguidos pelo robô) e a integração da biblioteca SLAM Toolbox para estimar a pose do robô e mapear o entorno. Como resultado, obteve-se um sistema capaz de guiar o robô de forma autônoma pelo ambiente de laboratório e realizou-se a validação da localização estimada pela biblioteca de SLAM com uma referência externa de alta precisão (sistema de câmeras OptiTrack).
+
+Foram realizados experimentos em ambiente real para avaliar o desempenho dos algoritmos desenvolvidos. O robô percorreu duas trajetórias distintas pré-definidas no laboratório (uma sequência de segmentos retos, denominada "CASA", e uma curva fechada em formato de lemniscata de Bernoulli), sob duas configurações de obtenção de pose: (i) usando o sistema de câmeras OptiTrack como fonte de referência de alta precisão (ground truth) para a posição do robô; e (ii) usando exclusivamente a pose estimada pela SLAM Toolbox. Dessa forma, pôde-se comparar diretamente a qualidade da localização e o efeito desta na precisão do seguimento de trajetória.
+
+Os resultados experimentais demonstraram que o sistema de controle e planejamento permitiu ao robô seguir as trajetórias desejadas em ambos os cenários de localização. Quando operando com a pose provida pelo OptiTrack (caso ideal), o robô apresentou boa aderência ao trajeto planejado, apresentando apenas erros modestos nos pontos de curvas mais fechadas e durante o início do deslocamento. Ao utilizar a pose estimada pela SLAM Toolbox, o robô também conseguiu completar as rotas, porém observou-se um aumento dos erros de seguimento e um leve comportamento oscilatório em certos trechos do percurso. Essa oscilação ficou especialmente evidente na trajetória em forma de lemniscata, sugerindo que imprecisões ou atrasos na atualização da pose pelo SLAM influenciaram o controlador. Apesar disso, ao comparar as trajetórias registradas pela SLAM Toolbox com aquelas medidas pelo OptiTrack, verificou-se que ambas permanecem próximas, indicando que a estimativa de posição obtida pela SLAM Toolbox é, em geral, confiável e possui erro limitado em relação à referência de alta precisão.
+
+As principais limitações observadas concentram-se no desempenho dinâmico do robô durante o seguimento de trajetórias usando a localização por SLAM. O comportamento oscilatório e os erros mais acentuados em curvas indicam que o controlador poderia ser melhor ajustado ou complementado com técnicas de filtragem de ruído para lidar com a incerteza da pose estimada. 
+
+Por fim, ressalta-se a decisão de utilizar a SLAM Toolbox em vez de desenvolver um algoritmo de SLAM próprio. Dado o alto nível de complexidade inerente a algoritmos de SLAM e considerando o tempo disponível, o uso dessa biblioteca consolidada do ROS mostrou-se adequado. A SLAM Toolbox provê mapeamento 2D eficiente e localização confiável, o que permitiu concentrar esforços no desenvolvimento dos controladores e na integração geral do sistema, evitando retrabalho em problemas já abordados por soluções existentes. Os resultados confirmam que essa escolha foi positiva, já que as estimativas de pose fornecidas pelo SLAM Toolbox foram consistentes ao longo dos testes, conforme verificado pela comparação com os dados do OptiTrack.
+
+Como trabalhos futuros, diversas vertentes podem dar continuidade a este projeto. Uma direção promissora é estender o sistema para um cenário cooperativo com múltiplos robôs, incluindo robôs aéreos (drones) trabalhando em conjunto com o robô terrestre para acelerar o mapeamento e cobrir áreas maiores. Também se propõe aprimorar os controladores de movimento, seja por meio de sintonia mais refinada ou do uso de técnicas de controle avançadas, visando eliminar as oscilações observadas e melhorar a precisão de rastreamento da trajetória. Adicionalmente, a integração de algoritmos de planejamento global mais complexos permitiria que o robô utilizasse o mapa construído para planejar rotas ótimas e desviar de obstáculos de forma autônoma, em contraste às trajetórias fixas utilizadas neste trabalho. Essas evoluções tornariam o sistema mais robusto e eficiente, aproximando-o das exigências de aplicações reais de navegação autônoma cooperativa.

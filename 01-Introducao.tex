@@ -11,44 +11,26 @@ Neste contexto, a cooperação entre robôs móveis aéreos e terrestres tem se 
 
 Apesar das vantagens, a realização de tarefas de mapeamento de forma cooperativa apresenta diversos desafios. Primeiramente, se faz necessário que os robôs sigam uma rota eficiente para o mapeamento, fazendo com que estes precisem realizar menos movimentos para cobrir toda a área a ser mapeada.  Mais ainda, os mapas gerados individualmente pelos robôs devem ser combinados em um único mapa, com o cuidade para que o algoritmo não gere distorções geométricas, artefatos, ou sofra com variações de resolução, escala e iluminação \cite{Bavle2023FromSurvey}\cite{AbaspurKazerouni2022ASLAM}. Por fim, é importante que os robôs sejam capazes de desviar de obstáculos em ambientes estáticos, e de outros agentes de forma ágil em ambientes dinâmicos \cite{Li2022VisualDetection}. Esses requisitos exigem um planejamento ótimo para as rotas de navegação cooperativa\cite{Vasconcelos2020Real-timeMissions}.
 
-Sendo assim, a realização deste projeto visa contribuir para o avanço do conhecimento na área de navegação autônoma cooperativa com ênfase em tarefas de mapeamento, explorando as possibilidades e os desafios da cooperação entre veículos aéreos e terrestres, com foco na geração de algoritmos ótimos para as rotas de navegação cooperativa. Espera-se que os resultados obtidos forneçam contribuições importantes para o desenvolvimento de sistemas multirrobôs para taregas de mapeamento, permitindo que o transporte autônomo de cargas possa ser realizado em ambiente desconhecido a priori.
-
-\section{Apresentação}
-
-\section{Trabalhos Relacionados}
-
 
 \section{Objetivos}
 
 \paragraph*{Objetivo Geral}
 
-\begin{itemize}
-\item 
-O desenvolvimento de xxxxxx. Para isso, pretende-se aplicar xxxx.
-\end{itemize}
+O objetivo geral deste projeto consiste em explorar algoritmos para o controle da navegação autônoma de robôs móveis e sistemas para o mapeamento do entorno destes robôs a fim de realizar tarefas de navegação de forma autônoma em ambientes desconhecidos. Para isso, buscou-se implementar e validar algoritmos de controle cinemático de robôs, de planejamento de rotas e seguimento de trajetória, além de técnicas de análise de informações obtidas de sensores para a detecção de características do ambiente e realização das tarefas de localização e mapeamento.
 
 \paragraph*{Objetivos Específicos}
 
 \begin{itemize}
 \item
-Estudar o xxxxx;
+Realizar pesquisa bibliográfica para aprofundamento no estado da arte a respeito das técnicas de Localização e Mapeamento Simultâneos (do inglês, \textit{Simultaneous Localization and Mapping} - SLAM), planejamento de rotas e controle de robôs móveis.
 \item
-Obter um xxxxx;
+Implementar e validar experimentalmente algoritmos de controle de robôs móveis.
 \item
-Implementar um xxxx;
+Implementar e validar experimentalmente algoritmos de SLAM para localizalição no ambiente do laboratório.
 \item
-Validar e testar o xxxxx;
+Analisar os resultados dos experimentos obtidos, comparando os dados de posição obtidos utilizando os algoritmos de SLAM com os dados de posição obtidos através do Sistema de Câmeras OptiTrack.
 \end{itemize}
 
 \section{Estrutura do Texto}
-O presente trabalho está estruturado da seguinte maneira:
-\begin{itemize}
-\item
-\textbf{Introdução}: este capítulo inicial tem como objetivo xxx;
-\item
-\textbf{Proposta}: neste capítulo é apresentado xxx; 
-\item
-\textbf{Resultados}: neste capítulo xxx; 
-\item
-\textbf{Conclusão}: no capítulo final deste trabalho são xxx.
-\end{itemize}
+
+No Capítulo \ref{Cap02:Referencial_Teorico} é apresentado o referencial teórico e conceitos necessário para a compreensão da pesquisa relizada. Os recursos utilizados, a metodologia adotada e as etapas de desenvolvimento do projeto estão descritas no Capítulo \ref{Cap03:Metodologia}. Os resultados obtidos nos experimentos realizados são apresentados no Capítulo \ref{Cap04} e, por fim, no Capítulo \ref{Cap05} são discutidas as conclusões do trabalho, abordando os resultados obtidos e as perspectivas de trabalhos futuros.

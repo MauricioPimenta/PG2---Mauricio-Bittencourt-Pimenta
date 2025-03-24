@@ -1,18 +1,19 @@
-\begin{itemize}
-    \item \add{Descrição do ambiente experimental e das plataformas utilizadas (robôs, sensores, sistema OptiTrack e a plataforma LIMO, se aplicável).}
-    \item \add{Apresentação do SLAM\_toolbox: principais funcionalidades, justificativa para a escolha e forma de integração com o sistema de robôs.}
-    \item \add{Detalhamento da metodologia de comparação: critérios, métricas de desempenho (erro de localização, tempo de processamento, robustez, etc.) e a forma de coleta e análise dos dados.}
-\end{itemize}
 
-\add{Neste capítulo deverão ser descritos os recursos usados para a realização do projeto (equipamentos, material bibliográfico, programas de simulação, etc.), bem como aspectos relativos à disponibilidade ou não dos mesmos para a realização do estudo. Caso a disponibilidade de algum recurso seja limitada, ou esteja vinculada a alguma data de entrega, fator externo ou, até mesmo, a outro projeto, tal informação deve ser apresentada de forma explícita e clara nesta seção. O atraso ou a indisponibilidade deste recurso afetará diretamente o cronograma de execução do projeto, fato que deve ser cuidadosamente avaliado na construção do cronograma.}
+% \begin{itemize}
+%     \item \add{Descrição do ambiente experimental e das plataformas utilizadas (robôs, sensores, sistema OptiTrack e a plataforma LIMO, se aplicável).}
+%     \item \add{Apresentação do SLAM\_toolbox: principais funcionalidades, justificativa para a escolha e forma de integração com o sistema de robôs.}
+%     \item \add{Detalhamento da metodologia de comparação: critérios, métricas de desempenho (erro de localização, tempo de processamento, robustez, etc.) e a forma de coleta e análise dos dados.}
+% \end{itemize}
 
+% \add{Neste capítulo deverão ser descritos os recursos usados para a realização do projeto (equipamentos, material bibliográfico, programas de simulação, etc.), bem como aspectos relativos à disponibilidade ou não dos mesmos para a realização do estudo. Caso a disponibilidade de algum recurso seja limitada, ou esteja vinculada a alguma data de entrega, fator externo ou, até mesmo, a outro projeto, tal informação deve ser apresentada de forma explícita e clara nesta seção. O atraso ou a indisponibilidade deste recurso afetará diretamente o cronograma de execução do projeto, fato que deve ser cuidadosamente avaliado na construção do cronograma.}
 
+\label{Cap03:Metodologia}
 %% ----------------------------------------------
 %%
 %% -                  RECURSOS                  -
 %%
 %% ----------------------------------------------
-Este trabalho se propôs a explorar algoritmos de localização, mapeamento e planejamento de rotas utilizando robôs móveis. Inicialmente, a proposta era desenvolver algoritmos próprios de SLAM para criação de mapas e localização no ambiente do laboratório, mas as dificuldades técnicas e restrições de tempo levaram à escolha de uma abordagem mais robusta. Assim, optou-se pela utilização da \textit{SLAM Toolbox}\cite{git:slam_toolbox}, uma biblioteca de SLAM robusta e amplamente testada, presente no ecossistema ROS (Robot Operating System). A utilização desta biblioteca é recomendada nos tutoriais de SLAM do pacote Nav2 do ROS 2, o pacote padrão utilizado para navegação de robôs, demonstrando a confiança da comunidade ROS nesta biblioteca.
+Este trabalho se propôs a explorar algoritmos de localização, mapeamento e planejamento de rotas utilizando robôs móveis. Inicialmente, a proposta era desenvolver algoritmos próprios de SLAM para criação de mapas e localização no ambiente do laboratório, mas as dificuldades técnicas e restrições de tempo levaram à escolha de uma abordagem mais robusta. Assim, optou-se pela utilização da \textit{SLAM Toolbox}\cite{site:Slam_toolbox}, uma biblioteca de SLAM robusta e amplamente testada, presente no ecossistema ROS (Robot Operating System). A utilização desta biblioteca é recomendada nos tutoriais de SLAM do pacote Nav2 do ROS 2, o pacote padrão utilizado para navegação de robôs, demonstrando a confiança da comunidade ROS nesta biblioteca.
 
 Assim, este projeto se propõe a utilizar a SLAM Toolbox para localização e mapeamento de robôs móveis terrestres no ambiente do LAB-AIR e analisar a qualidade do posicionamento e do controle utilizado para os robôs desenvolverem trajetórias definidas, usando o sistema de câmeras OptiTrack presente no laboratório como referência de alta precisão (\textit{ground-truth}).
 
@@ -39,7 +40,7 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
 \section{Plataforma Robótica LIMO}
 \label{sec:Plataforma_LIMO}
 
-    Como plataforma móvel principal foi utilizado o robô móvel terrestre \textit{Limo}, desenvolvido pela \textit{Agilex Robotics}\add{Referencia do site da Agilex e do LIMO??}. Esta é uma plataforma versátil, contando com quatro diferentes modos de operação (diferencial, com esteiras, omnidirecional e \textit{Ackermann}) e equipada com sensores de percepção ativos, contando com um sensor laser do tipo \textit{LiDar} e uma câmera de profundidade, imprescindíveis para a execução de tarefas de mapeamento e localização do robô no seu entorno.
+    Como plataforma móvel principal foi utilizado o robô móvel terrestre \textit{Limo}, desenvolvido pela \textit{Agilex Robotics}\cite{site:Agilex_Robotics}. Esta é uma plataforma versátil, contando com quatro diferentes modos de operação (diferencial, com esteiras, omnidirecional e \textit{Ackermann}) e equipada com sensores de percepção ativos, contando com um sensor laser do tipo \textit{LiDar} e uma câmera de profundidade, imprescindíveis para a execução de tarefas de mapeamento e localização do robô no seu entorno.
 
     \subsection{Recursos Computacionais}
     \label{sec:Recursos_LIMO}
@@ -95,7 +96,7 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
     \subsection{Controle do LIMO no modo Diferencial}
     \label{sec:Controle_Dif_LIMO}
     
-        O controlador cinemático utilizado para o modo diferencial do LIMO é apresentado a seguir, baseado no controlador diferencial apresentado na seção \ref{sec:Controle_Robos_Diferenciais}.
+        O controlador cinemático utilizado para o modo diferencial do LIMO é apresentado a seguir, baseado no controlador diferencial apresentado na seção \ref{sec:Modelo_Robos_Diferenciais}.
         
         Como o LIMO apresenta controladores de baixo nível incorporados ao robô, estes já convertem os comandos de velocidade recebidos em comandos de rotação das rodas, portanto precisamos apenas desenvolver um controlador de alto nível que calcule a velocidade longitudinal e a velocidade angular que desejamos que o robô desenvolva para atingir o objetivo. Consequentemente, o sinal de controle de alto nível utilizado é um vetor de velocidades $\begin{bmatrix}v & \omega \end{bmatrix}^{T}$.
         
@@ -120,10 +121,10 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
            =  
            \begin{bmatrix} \cos{\psi} & \sin{\psi} \\ -\frac{1}{a}\sin{\psi} & \frac{1}{a} \cos{\psi}   \end{bmatrix} 
            \begin{bmatrix}\dot{x}_{c,ref} \\ \dot{y}_{c,ref}   \end{bmatrix}
-           \label{eq:kinematic_controller_differential}
+           \label{eq:kinematic_controller_differential_limo}
         \end{equation}
         
-        onde $v$ e $\omega$ são, respectivamente, as velocidades linear e angular no sistema de coordenadas do robô e, consequentemente, os sinais de controle que são enviados para o robô.
+        onde $v$ e $\omega$ são, respectivamente, as velocidades linear e angular no sistema de coordenadas do robô e, consequentemente, os sinais de controle que são enviados para controlá-lo.
     
 
 
@@ -144,9 +145,9 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
     \subsection{Biblioteca Slam Toolbox}
     \label{sec:SLAM_Toolbox}
 
-    \add{Apresentação do SLAM\_toolbox: principais funcionalidades, justificativa para a escolha e forma de integração com o sistema de robôs.}
+    % \add{Apresentação do SLAM\_toolbox: principais funcionalidades, justificativa para a escolha e forma de integração com o sistema de robôs.}
     
-    \add{Detalhamento da integração do SLAM\_toolbox com os demais módulos do sistema (por exemplo, aquisição e fusão dos dados sensoriais, controle do robô).}
+    % \add{Detalhamento da integração do SLAM\_toolbox com os demais módulos do sistema (por exemplo, aquisição e fusão dos dados sensoriais, controle do robô).}
 
     De acordo com \citeonline{Macenski2021}, a SLAM Toolbox nasceu com o foco em lidar com ambientes dinâmicos e de grande escala, como galpões, indústrias ou hipermercados, utilizando os processadores limitados presentes em robôs móveis. Segundo eles, os algoritmos de SLAM \textit{open-source} existentes anteriormente no ambiente ROS não eram capazes de realizar o mapeamento correto de grandes áreas e o único que era capaz de fazê-lo, o \textit{Cartographer}, foi abandonado pelo Google e não recebe mais atualizações e melhorias.
 
@@ -172,18 +173,41 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
     
     
 
-    \add{Descrição da implementação experimental, destacando as etapas de configuração, calibração e execução dos testes.}
+    % \add{Descrição da implementação experimental, destacando as etapas de configuração, calibração e execução dos testes.}
 
-    Foi necessário modificar o código da SLAM Toolbox para que a pose do robô obtida a partir do escaneamento do LiDAR fosse publicada no modo de Localização.
+    
+\section{Detalhes da Implementação do Projeto}
 
-\section{Estrutura do código}
+    Para este projeto foi necessário realizar uma pequena modificação na estrutura do LIMO, modificando o local do seu sensor laser, que normalmente encontra-se montado na parte posterior no robô, possibilitando apenas o uso de $180\degree$ do campo de visão do LiDAR. Criou-se então uma plataforma para montagem do sensor laser na parte superior do corpo do robô, a fim de possibilitar o uso completo dos $360\degree$ do campo de visão do LiDAR do robô (Ver Figura \ref{fig:LIMO_Experimento}). 
 
-\begin{itemize}
-    \item \add{Descrição do sistema original proposto e os algoritmos inicialmente planejados.}
-    \item \add{Justificativa das limitações encontradas e da decisão de adotar o SLAM\_toolbox.}
-    \item \add{Detalhamento da integração do SLAM\_toolbox com os demais módulos do sistema (por exemplo, aquisição e fusão dos dados sensoriais, controle do robô).}
-    \item \add{Descrição da implementação experimental, destacando as etapas de configuração, calibração e execução dos testes.}
-\end{itemize}
+    \begin{figure}[htb]
+        \centering
+        \caption{Robô LIMO Modificado para uso do campo de visão total do LiDAR}
+        \includegraphics[width=0.8\linewidth]{img/LIMO_EXPERIMENTO.jpg}
+        \source
+        \label{fig:LIMO_Experimento}
+    \end{figure}
 
+    Para realizar o projeto, primeiro foi implementado o controlador para o robô diferencial, seguindo a lei de controle da Equação \ref{eq:ff_fb_law_limo}. O código foi implementado em linguagem C++ e utilizando as bibliotecas do ROS para obtenção dos dados de posição e publicação dos comandos de velocidade.
+    
+    Também foi implementado um código para publicação da trajetória a ser seguida pelo robô, que calcula os pontos da trajetória em função da frequência de publicação e da velocidade desejada para a trajetória. Este código publica as poses objetivos no tópico /goal e também publica o caminho inteiro em um outro tópico, que pode ser utilizado para tarefas de seguimento de caminho ou para visualização da trajetória e/ou caminho desejado. Todos os códigos implementados estão disponíveis no \textit{Github} \cite{site:Github-SLAM_Research}.
 
+    Para a utilização da SLAM Toolbox para este projeto, realizou-se uma cópia do repositório da SLAM Toolbox\cite{site:Slam_toolbox}. Como utilizamos o ROS 1 no LAB-AIR foi necessário modificar o código da SLAM Toolbox para que a pose do robô obtida a partir do escaneamento do LiDAR fosse publicada também no modo de Localização. A SLAM Toolbox somente publicava as poses corretamente na versão para o ROS 2.
 
+    A SLAM Toolbox expõe ao usuário diversos parâmetros de configuração que podem ser modificados para buscar o melhor desempenho do sistema. Para buscar o melhor funcionamento do sistema junto ao controle utilizado e obter melhores resultados, foi necessário modificar estes parâmetros e realizar diversos testes, rodando diversas vezes o código em modo de slam online e localização para obtenção de resultados mais satisfatórios para o projeto.
+    
+    Em específico, notou-se durante a implementação do projeto e durante os testes que o robô utilizado apresentava muitos erros de odometria, devido ao problema de deslizamento das rodas no chão, principalmente ao realizar curvas no modo diferencial. Portanto, para obter melhores resultados utilizando a SLAM Toolbox modificou-se a função utilizada para rejeitar valores discrepantes (\textit{outliers}) para uma função \textit{HuberLoss} através do parâmetro \textit{ceres\_loss\_function}.
+
+    Outros parâmetros também foram alterados para que a pose do robô fosse atualizada e publicada com maior frequência pela biblioteca. Os parâmetros \textit{minimum\_time\_interval}, \textit{minimum\_travel\_distance} e \textit{minimum\_travel\_heading} foram reduzidos para que o sistema de controle pudesse funcionar satisfatoriamente.
+    
+
+    
+
+% \section{Estrutura do código}
+
+% \begin{itemize}
+%     \item \add{Descrição do sistema original proposto e os algoritmos inicialmente planejados.}
+%     \item \add{Justificativa das limitações encontradas e da decisão de adotar o SLAM\_toolbox.}
+%     \item \add{Detalhamento da integração do SLAM\_toolbox com os demais módulos do sistema (por exemplo, aquisição e fusão dos dados sensoriais, controle do robô).}
+%     \item \add{Descrição da implementação experimental, destacando as etapas de configuração, calibração e execução dos testes.}
+% \end{itemize}
