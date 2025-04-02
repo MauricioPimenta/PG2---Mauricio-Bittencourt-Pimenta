@@ -35,7 +35,7 @@
 \usepackage{color}				% Controle das cores
 %\usepackage{easyreview}         % Controle de revisões (adicionar ou destacar texto)
 \usepackage{graphicx}			% Inclusão de gráficos
-\usepackage[linesnumbered]{algorithm2e} % Formatação de escrita de algoritmos
+\usepackage[linesnumbered, ruled, vlined]{algorithm2e} % Formatação de escrita de algoritmos
 \usepackage{microtype} 			% para melhorias de justificação
 \usepackage[table,xcdraw]{xcolor} 
 \usepackage{multirow}			% Para usar a tabela gerada no www.tablesgenerator.com
@@ -77,7 +77,8 @@
 % ---
 \usepackage[brazilian,hyperpageref]{backref}	 % Paginas com as citações na bibl
 \usepackage[alf,abnt-etal-list=0,abnt-etal-cite=3]{abntex2cite}	% Citações padrão ABNT
-%\usepackage[num]{abntex2cite}	% Citações padrão ABNT
+% \usepackage[num]{abntex2cite}	% Citações padrão ABNT
+% \usepackage[alf]{abntex2cite}
 % --- 
 \usepackage{pdfpages}
 %------------------------------------------------------------------ 
@@ -163,8 +164,8 @@
 \newif\ifisFolhaAprovacao
 % \isTipoDocumentotrue %PG (descomentar em caso de PG 1)
 \isTipoDocumentofalse %TCC (descomentar em caso de PG 2)
-%\isFolhaAprovacaotrue %TCC (PG 2) finalizado
-\isFolhaAprovacaofalse %TCC (PG 2) não finalizado
+\isFolhaAprovacaotrue %TCC (PG 2) finalizado
+% \isFolhaAprovacaofalse %TCC (PG 2) não finalizado
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -404,7 +405,10 @@
 %%%%%%%%%%%%%  D %%%%%%%%%%%%%%%
 % \item [DL] \textit{Deep Learning}
 %%%%%%%%%%%%%  E %%%%%%%%%%%%%%%
+\item[ESC] Controladores Eletrônicos de Velocidade
+\item[EKF] \textit{Extended Kalman Filter} - Filtro de Kalman Extendido
 %%%%%%%%%%%%%  F %%%%%%%%%%%%%%%
+\item[FastSLAM] Localização e Mapeamento Simultâneos utilizando a técnica de Filtro de Partículas
 %%%%%%%%%%%%%  G %%%%%%%%%%%%%%%
 \item[GPU] \textit{Graphics Processing Unit} 
 %%%%%%%%%%%%%  H %%%%%%%%%%%%%%%
@@ -412,6 +416,7 @@
 \item[IMU]  Unidade de Medição Inercial (\textit{Inertial Measurement Unit})
 %%%%%%%%%%%%%  J %%%%%%%%%%%%%%%
 %%%%%%%%%%%%%  K %%%%%%%%%%%%%%%
+\item[KF] \textit{Kalman Filter} - Filtro de Kalman
 %%%%%%%%%%%%%  L %%%%%%%%%%%%%%%
 \item[LAB-AIR] Laboratório de Automação Inteligente e Robótica
 \item[LiDAR] \textit{Light Detection And Ranging}

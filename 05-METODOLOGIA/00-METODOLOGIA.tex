@@ -13,23 +13,21 @@
 %% -                  RECURSOS                  -
 %%
 %% ----------------------------------------------
-Este trabalho se propôs a explorar algoritmos de localização, mapeamento e planejamento de rotas utilizando robôs móveis. Inicialmente, a proposta era desenvolver algoritmos próprios de SLAM para criação de mapas e localização no ambiente do laboratório, mas as dificuldades técnicas e restrições de tempo levaram à escolha de uma abordagem mais robusta. Assim, optou-se pela utilização da \textit{SLAM Toolbox}\cite{site:Slam_toolbox}, uma biblioteca de SLAM robusta e amplamente testada, presente no ecossistema ROS (Robot Operating System). A utilização desta biblioteca é recomendada nos tutoriais de SLAM do pacote Nav2 do ROS 2, o pacote padrão utilizado para navegação de robôs, demonstrando a confiança da comunidade ROS nesta biblioteca.
+Este projeto se propõe a utilizar a \textbf{SLAM Toolbox} para localização e mapeamento de robôs móveis terrestres no ambiente do Laboratório de Automação Inteligente e Robótica (LAB-AIR) e analisar a qualidade do posicionamento e do controle utilizado para os robôs desenvolverem trajetórias definidas, usando o sistema de câmeras OptiTrack presente no laboratório como referência de alta precisão (\textit{ground-truth}).
 
-Assim, este projeto se propõe a utilizar a SLAM Toolbox para localização e mapeamento de robôs móveis terrestres no ambiente do LAB-AIR e analisar a qualidade do posicionamento e do controle utilizado para os robôs desenvolverem trajetórias definidas, usando o sistema de câmeras OptiTrack presente no laboratório como referência de alta precisão (\textit{ground-truth}).
-
-Para isso, utilizou-se da estrutura pré-existente do Laboratório de Automação Inteligente e Robótica (LAB-AIR), que dispõe de robôs móveis terrestres e aéreosalém de um sistema de câmeras OptiTrack empregado como referência de alta precisão (\textit{ground-truth}) na verificação do desempenho dos algoritmos de localização. 
+Para isso, utilizou-se da estrutura pré-existente do LAB-AIR, que dispõe de robôs móveis terrestres e aéreos, além de um sistema de câmeras OptiTrack empregado como referência de alta precisão (\textit{ground-truth}) na verificação do desempenho dos algoritmos de localização. 
 Nas seções seguintes, serão apresentados os recursos e equipamentos utilizados, detalhando as características da plataforma robótica, dos sensores empregados e as especificidades do sistema de câmeras. A seção \ref{sec:ROS} discute aspectos relevantes do ecossistema ROS e da \textit{SLAM Toolbox}, que fundamentam a metodologia adotada neste projeto.
 
 
 \section{Sistemas de Câmeras \textit{OptiTrack}}
 \label{sec:Sistema_Optitrack}
 
-    O LAB-AIR conta com um sistema de captura de movimento da \textit{OptiTrack} que é utilizado como um sistema de referência para a pose do robô, devido à sua alta resolução e precisão. Este sistema consiste em doze câmeras \textit{Full HD} de alta velocidade capazes de identificar a posição de marcadores reflexivos acoplados na parte externa do robô com precisão milimétrica e até 240 frames por segundo (fps). As câmeras estão conectadas a um computador com \textit{Windows 10} rodando o software \textit{Motive}, que processa as informações individuais das câmeras e disponibiliza as informações de posicionamento dos marcadores detectados pelas câmeras. No software é possível selecionar todos os marcadores que estão acoplados ao robô e unificá-los como um objeto, definindo um nome para identificação do objeto, o que permite obter tanto a posição quanto a orientação de um ou mais objetos.
+    O LAB-AIR conta com um sistema de captura de movimento da \textit{OptiTrack} que é utilizado como um sistema de referência para a pose do robô, devido à sua alta resolução e precisão. Este sistema consiste em doze câmeras \textit{Full HD} de alta velocidade capazes de identificar a posição de marcadores reflexivos acoplados na parte externa do robô com precisão milimétrica e taxa de aquisição de até 240 frames por segundo (fps). As câmeras estão conectadas a um computador com \textit{Windows 10} rodando o software \textit{Motive} \cite{site:OptiTrack_Motive}, responsável por processar as informações individuais das câmeras e disponibilizar as informações de posicionamento dos marcadores detectados pelas câmeras. No software é possível selecionar todos os marcadores que estão acoplados ao robô, unificá-los como um objeto e nomeá-los para identificação, o que permite obter tanto a posição quanto a orientação de um ou mais objetos.
     
     \begin{figure}[htb]
          \centering
          \caption{Arena do LAB-AIR.}
-         \includegraphics[width=0.8\linewidth]{OptitrackArenaNovaLIMO.pdf}
+         \includegraphics[width=\linewidth]{img/OptitrackArenaTCC_Mauricio.pdf}
          \source
          \label{fig:ArenaLAB-AIR}
      \end{figure}
@@ -40,7 +38,15 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
 \section{Plataforma Robótica LIMO}
 \label{sec:Plataforma_LIMO}
 
-    Como plataforma móvel principal foi utilizado o robô móvel terrestre \textit{Limo}, desenvolvido pela \textit{Agilex Robotics}\cite{site:Agilex_Robotics}. Esta é uma plataforma versátil, contando com quatro diferentes modos de operação (diferencial, com esteiras, omnidirecional e \textit{Ackermann}) e equipada com sensores de percepção ativos, contando com um sensor laser do tipo \textit{LiDar} e uma câmera de profundidade, imprescindíveis para a execução de tarefas de mapeamento e localização do robô no seu entorno.
+    Como plataforma móvel principal foi utilizado o robô móvel terrestre \textit{LIMO}, desenvolvido pela \textit{Agilex Robotics}\cite{site:Agilex_Robotics}. Esta é uma plataforma versátil, contando com quatro diferentes modos de operação (diferencial, com esteiras, omnidirecional e \textit{Ackermann}) e equipada com sensores de percepção ativos, contando com um sensor laser do tipo \textit{LiDar} e uma câmera de profundidade, imprescindíveis para a execução de tarefas de mapeamento e localização do robô no seu entorno. A Figura \ref{fig:LIMO_MODES} apresenta o robô LIMO em configurações diferentes de montagens para uso nos diversos modos de operação disponíveis. A imagem mais à direita mostra a montagem usada no modo diferencial e \textit{car-like}.
+
+    \begin{figure}[htb]
+        \centering
+        \caption{Plataforma Robótica LIMO em seus diferentes modos de operação. À esquerda, configuração omnidirecional com rodas \textit{mecanum}. Ao centro, configuração com esteiras e à direita, robô com as rodas padrão para uso nas configurações \textit{Ackermann} ou diferencial.}
+        \includegraphics[width=\linewidth]{img/Limo_modes.png}
+        \label{fig:LIMO_MODES}
+        \source[\cite{limoUserManual}]
+    \end{figure}
 
     \subsection{Recursos Computacionais}
     \label{sec:Recursos_LIMO}
@@ -49,28 +55,28 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
         \begin{table}[htb]
         \centering        
         \caption{Lista de Sensores e características do LIMO}
-            \resizebox{0.8\columnwidth}{!}{ % Resize to the column width
+            \resizebox{0.9\columnwidth}{!}{ % Resize to the column width
                 \setlength{\extrarowheight}{4pt}            
                 \begin{tabular}{|l|r|}
                      \hline
-                     \textbf{Item} & \textbf{Description}\\ 
+                     \textbf{Item} & \textbf{Descrição}\\ 
                      \hline
-                     Overall dimension & $322\ mm\times220\ mm\times251\ mm$\\ \hline
-                     Main Board & NVIDIA Jetson Nano (4G)\\ \hline
-                     Operating system & Ubuntu 18.04\\ \hline
-                     Laser sensor & YDLiDAR EAI X2L\\ \hline
-                     Depth camera & ORBBEC Astra+\\ \hline
-                     IMU & HI226\\ \hline
-                     Voice module & iFlytek voice assistant/Google assistant\\ \hline
-                     Speakers & Left and Right, dual channels (2x2W)\\ \hline
-                     USB hub & One type-C plus two 2.0 ports \\ \hline
-                     Front display & 1.54 inch 128x64 white OLED display \\ \hline
-                     Rear display & 7 inches 1024x600 IPS touch screen\\ \hline
-                     Communication & Wi-Fi and Bluetooth 5.0 \\ \hline
-                     No-load maximum speed & $\pm\ 1\ m/s,$ with no payload\\ \hline
-                     Battery & 12 V Li-ion, 5200 mAh\\ \hline
-                     Battery working time & 40 minutes \\ \hline
-                     Battery standby time & 2 hours \\ 
+                     Dimensão Geral & $322\ mm\times220\ mm\times251\ mm$\\ \hline
+                     Placa Principal & NVIDIA Jetson Nano (4G)\\ \hline
+                     Sistema Operacional & Ubuntu 18.04\\ \hline
+                     Sensor Laser & YDLiDAR EAI X2L\\ \hline
+                     Camera de Profundidade & ORBBEC Astra+\\ \hline
+                     Unidade de Medição Inercial & HI226\\ \hline
+                     Módulo de Voz & iFlytek assistente de voz\\ \hline
+                     Auto-falantes & Esquerdo e Direito, \textit{Dual Channel} (2x2W)\\ \hline
+                     Hub USB & Um USB tipo C e duas portas USB 2.0 \\ \hline
+                     \textit{Display} Frontal & 1.54 pol. 128x64 \textit{display} OLED branco \\ \hline
+                     \textit{Display} Traseiro & 7 pol. 1024x600 IPS \textit{touch screen}\\ \hline
+                     Comunicação & Wi-Fi e Bluetooth 5.0 \\ \hline
+                     Velocidade Máxima sem carga & $\pm\ 1\ m/s,$ sem carga\\ \hline
+                     Bateria & 12 V Li-ion, 5200 mAh\\ \hline
+                     Duração da bateria em uso & 40 minutes \\ \hline
+                     Duração da bateria em \textit{stand-by} & 2 hours \\ 
                      \hline
                 \end{tabular}
             }
@@ -80,7 +86,7 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
 
         A placa principal, uma Nvidia Jetson Nano, é um computador de pequeno porte poderoso capaz de suportar aplicações diversas assim como aplicações de IA de nível básico. Ela possui uma CPU Quad-Core ARM57 de 64 bits rodando a 1,43 GHz, 4 GB de memória RAM LPDDR4 e uma GPU Nvidia Maxwell de 128 núcleos, capaz de decodificação de vídeo em resolução 4K a 60 quadros por segundo. A placa possui um conector Ethernet Gigabit para acesso rápido à internet, saída HDMI, 4 portas USB 3.0, que permitem a conexão de vários dispositivos, e uma porta USB 2.0 Micro-B para alimentação.
 
-        O chassi do LIMO é feito de chapas metálicas, pesa cerca de 4,8 kg e suporta até 4 kg de carga útil. Além disso, essa estrutura pode ser expandida para integrar uma unidade de processamento mais poderosa ou outros dispositivos de sensoriamento. Ou seja, o hardware nativo do LIMO é expansível, o que o torna ainda mais interessante para pesquisa/aplicações. O robô também conta com um módulo Bluetooth 5.0 embutido para conexão com um aplicativo móvel disponível para Android. O LIMO e a placa Jetson Nano estão diretamente conectados por meio de uma interface UART, e a placa pode controlar o chassi através dessa interface. O hub USB fornece 2 interfaces USB e 1 interface Tipo C, todas operando sob o protocolo USB2.0. A tela traseira é conectada ao hub USB através da interface USB2.0 e possui função de toque.
+        O chassi do LIMO é feito de chapas metálicas, pesa cerca de 4,8 kg e suporta até 4 kg de carga útil. Além disso, essa estrutura pode ser expandida para integrar uma unidade de processamento mais poderosa ou outros dispositivos de sensoriamento. Ou seja, o hardware nativo do LIMO é expansível, o que o torna ainda mais interessante para pesquisa/aplicações. O robô também conta com um módulo Bluetooth 5.0 embutido para conexão com um aplicativo móvel disponível para Android. O LIMO e a placa Jetson Nano estão diretamente conectados por meio de uma interface UART, e a placa pode controlar o chassi através dessa interface. O hub USB fornece duas interfaces tipo A e uma interface Tipo C, todas operando sob o protocolo USB 2.0. A tela traseira é conectada ao hub USB através da interface USB 2.0 e possui função de toque.
 
         A placa Nvidia Jetson Nano executa o Ubuntu 18.04, e utiliza o SDK Nvidia JetPack, que contém bibliotecas para aprendizado profundo, visão computacional, gráficos e multimídia. O driver do LIMO, responsável pela comunicação computador de bordo-chassis, foi desenvolvido usando o sistema ROS (Robot Operating System), o que facilita a interação com outros sistemas ROS ao realizar tarefas de forma autônoma. Ele possui duas versões, em C++ e em Python, ambas podendo controlar o movimento do robô. A versão em Python está disponível no Python Package Index (PyPI)~\cite{limoRosPy}, e pode ser baixada usando o comando \texttt{pip}. A versão em C++ está disponível no Github \cite{limoRos1}.
 
@@ -90,24 +96,24 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
         Como mostra a Tabela~\ref{tab:sensors_limo}, o LIMO possui um sensor LiDAR e uma câmera RGBD. O LiDAR, um YDLIDAR X2, é um sensor laser 2D de 360$^\circ$ que opera com frequência de varredura de 3 kHz e frequência de escaneamento de 6 Hz, com um alcance de até 8 metros em ambientes internos. 
         A câmera de profundidade ORBBEC ASTRA+ utiliza tecnologia de imagem 3D por luz estruturada binocular. Ela contém uma câmera RGB e uma câmera infravermelha, e pode medir profundidades de 0,3 a 3 metros, com uma precisão de 6 mm na faixa de 1 m e um atraso de 30 a 45 ms. Sua resolução máxima de mapa de profundidade é de 640x400 pixels e sua resolução máxima de mapa de cores é de 1920x1080 pixels, ambos a 30 quadros por segundo.
     
-        A Unidade de Medição Inercial (IMU) HI226 de 6 graus de liberdade (6DoF) embarcada no LIMO combina um acelerômetro triaxial, um giroscópio triaxial e um microprocessador, permitindo adquirir dados de movimento em três eixos (X, Y e Z) com alta precisão (±2000°/s para o giroscópio e até ±8g para o acelerômetro), fornecendo excelente desempenho em diversas condições operacionais. Ela funciona à frequência máxima de saída, 100Hz, e utiliza algoritmos avançados de fusão de dados, podendo fornecer, simultaneamente, velocidades angulares e acelerações nos três eixos, quatérnions e ângulos de Euler, com pouca distorção de fase. Os erros (RMS) de inclinação e guinada são de 0,8° estáticos e 2,5° dinâmicos.
+        A Unidade de Medição Inercial (IMU) HI226 de 6 graus de liberdade (6DoF) embarcada no LIMO combina um acelerômetro triaxial, um giroscópio triaxial e um microprocessador, permitindo adquirir dados de movimento em três eixos (X, Y e Z) com alta precisão (±2000°/s para o giroscópio e até ±8g para o acelerômetro), fornecendo excelente desempenho em diversas condições operacionais. Ela funciona à frequência máxima de saída, 100Hz, e utiliza algoritmos avançados de fusão de dados, podendo fornecer, simultaneamente, velocidades angulares e acelerações nos três eixos, quatérnios e ângulos de Euler, com pouca distorção de fase. Os erros (RMS) de inclinação e guinada são de 0,8° estáticos e 2,5° dinâmicos.
 
 
     \subsection{Controle do LIMO no modo Diferencial}
     \label{sec:Controle_Dif_LIMO}
     
-        O controlador cinemático utilizado para o modo diferencial do LIMO é apresentado a seguir, baseado no controlador diferencial apresentado na seção \ref{sec:Modelo_Robos_Diferenciais}.
+        O controlador cinemático utilizado para o modo diferencial do LIMO é apresentado a seguir, baseado no controlador apresentado na seção \ref{sec:Modelo_Robos_Diferenciais}.
         
-        Como o LIMO apresenta controladores de baixo nível incorporados ao robô, estes já convertem os comandos de velocidade recebidos em comandos de rotação das rodas, portanto precisamos apenas desenvolver um controlador de alto nível que calcule a velocidade longitudinal e a velocidade angular que desejamos que o robô desenvolva para atingir o objetivo. Consequentemente, o sinal de controle de alto nível utilizado é um vetor de velocidades $\begin{bmatrix}v & \omega \end{bmatrix}^{T}$.
+        Como o LIMO possui controladores de baixo nível incorporados ao robô, estes já convertem os comandos de velocidade recebidos em comandos de rotação das rodas. Portanto, precisamos apenas desenvolver um controlador de alto nível que calcule a velocidade longitudinal e a velocidade angular que desejamos que o robô desenvolva para atingir o objetivo. Consequentemente, o sinal de controle de alto nível utilizado é um vetor de velocidades $\begin{bmatrix}v & \omega \end{bmatrix}^{T}$.
         
-        Os sensores do sistema provêm a última posição $\bs{x_c}$ do robô, então utiliza-se uma lei de controle \textit{feedforward} e \textit{feedback} proporcional, calculando-se o erro de posição do robô e a velocidade desejada do robô no objetivo:
+        Os sensores do sistema provêm a última posição $\bs{x_c}$ do robô, então utiliza-se uma lei de controle \textit{feedforward} e \textit{feedback} proporcional, calculando-se o erro de posição do robô e a velocidade desejada do robô no objetivo, a saber,
         \begin{equation}
             \dot{\bs{x}}_{c,ref} = \dot{\bs{x}}_{c,des} + \bs{\kappa}(\bs{x}_{c,des} - \bs{x}_c),
             \label{eq:ff_fb_law_limo}
         \end{equation}
         em que $\bs{\kappa}$ é uma matriz diagonal definida positiva, $\dot{\bs{x}}_{c,des}$ é o vetor de velocidades desejadas e $\dot{\bs{x}}_{c,ref}$ é o vetor de velocidades que o robô deve executar no referencial inercial do mapa ou do mundo.
     
-        Como visto na seção \ref{sec:Modelo_Robos_Diferenciais}, o modelo cinemático do robô diferencial, \( \bs{x}_c = \bs{H} \bs{u} \), é dado pela equação
+        Como visto na seção \ref{sec:Modelo_Robos_Diferenciais}, o modelo cinemático do robô diferencial, \( \dot{\bs{x}}_c = \bs{H} \bs{u} \), é dado pela equação
         
         \begin{equation}
             \begin{bmatrix} \dot{x}_c \\ \dot{y}_c  \end{bmatrix} = \begin{bmatrix} \cos{\psi} & -a \sin{\psi} \\ \sin{\psi} & a \cos{\psi}   \end{bmatrix} \begin{bmatrix} v \\ \omega    \end{bmatrix}
@@ -151,7 +157,7 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
 
     De acordo com \citeonline{Macenski2021}, a SLAM Toolbox nasceu com o foco em lidar com ambientes dinâmicos e de grande escala, como galpões, indústrias ou hipermercados, utilizando os processadores limitados presentes em robôs móveis. Segundo eles, os algoritmos de SLAM \textit{open-source} existentes anteriormente no ambiente ROS não eram capazes de realizar o mapeamento correto de grandes áreas e o único que era capaz de fazê-lo, o \textit{Cartographer}, foi abandonado pelo Google e não recebe mais atualizações e melhorias.
 
-    A SLAM Toolbox foi construída sobre a base do algoritmo Open Karto (da SRI \textit{International}), incorporando técnicas modernas de otimização. Utiliza um método de SLAM baseado em grafos (\textit{graph-based}), em que o mapa é representado por um grafo de poses do robô conectadas por restrições de odometria e detecções de loop (fechamento de ciclo), diferindo dos métodos baseados em filtros de Bayes (ex.: filtro de partículas do GMapping). Este método permite maior eficiência de recursos computacionais, especialmente enquanto realiza a construção de mapas em larga escala.
+    A SLAM Toolbox foi construída sobre a base do algoritmo Open Karto (da SRI \textit{International}), incorporando técnicas modernas de otimização. Utiliza um método de SLAM baseado em grafos (\textit{graph-based}), em que o mapa é representado por um grafo de poses do robô conectadas por restrições de odometria e detecções de loop (fechamento de ciclo), diferindo dos métodos baseados em filtros de Bayes \cite{2023bayesian} (ex.: filtro de partículas do GMapping \cite{Grisetti2007}) \cite{Thrun2005}. Este método permite maior eficiência de recursos computacionais, especialmente enquanto realiza a construção de mapas em larga escala.
 
 % ------------
     \subsubsection{Princípio de Funcionamento e Algoritmo}
@@ -162,7 +168,7 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
 
     Uma vez otimizado o grafo (especialmente após um fechamento de loop), todas as poses do robô são ajustadas consistentemente, e o mapa ocupacional é atualizado utilizando as leituras laser armazenadas em cada pose corrigida. Esse processo garante um mapa globalmente consistente, corrigindo distorções à medida que loops são fechados. Em resumo, a SLAM Toolbox segue o paradigma típico de SLAM gráfico: construção incremental do mapa com ajustes retroativos ocasionais via otimização de grafo, ao invés de manter múltiplas hipóteses simultâneas como nos métodos de filtro de partículas.
 
-    Um diferencial importante da SLAM Toolbox é suportar dois modos de operação quanto ao gerenciamento do fluxo de dados: síncrono e assíncrono. No modo síncrono, o nó processa todos os dados de sensor válidos na ordem em que chegam, podendo incorrer em atraso caso a taxa de leitura seja alta ou o processamento intenso (prioriza mapear com o máximo de detalhes). Já no modo assíncrono, o algoritmo processa os dados “o mais rápido possível”, descartando ou pulando leituras se necessário para manter o desempenho em tempo real (prioriza a responsividade). Esses modos permitem ajustar o funcionamento conforme a aplicação: por exemplo, em robôs com poder de computação limitado operando em áreas enormes, o modo assíncrono evita que o SLAM fique para trás em relação ao movimento do robô, enquanto em aplicações de mapping offline pode-se rodar no modo síncrono para utilizar todos os dados disponíveis. Em ambos os casos, o resultado final esperado (um mapa consistente) é equivalente, mas o modo assíncrono traz leve degradação de detalhe temporal para ganhar em robustez de tempo real. Adicionalmente, a biblioteca implementa um modo de operação apenas de odometria a laser (\textit{LiDAR odometry}), no qual é executada a mesma estimação de movimento por casamento de scans mas sem construir um mapa global – ou seja, sem um mapa prévio, o sistema atua como um odômetro local que realiza pequenos fechamentos de loop locais (útil para estimar movimento em tempo real quando não se deseja ainda um mapa completo). Esse modo pode ser entendido como uma forma degenerada de SLAM restrita a um mapa local temporário.
+    Um diferencial importante da SLAM Toolbox é suportar dois modos de operação quanto ao gerenciamento do fluxo de dados: síncrono e assíncrono. No modo síncrono, o nó processa todos os dados de sensor válidos na ordem em que chegam, podendo incorrer em atraso caso a taxa de leitura seja alta ou o processamento intenso (prioriza mapear com o máximo de detalhes). Já no modo assíncrono, o algoritmo processa os dados “o mais rápido possível”, descartando ou pulando leituras, se necessário, para manter o desempenho em tempo real (prioriza a responsividade). Esses modos permitem ajustar o funcionamento conforme a aplicação: por exemplo, em robôs com poder de computação limitado operando em áreas enormes, o modo assíncrono evita que o SLAM fique para trás em relação ao movimento do robô, enquanto em aplicações de mapping offline pode-se rodar no modo síncrono para utilizar todos os dados disponíveis. Em ambos os casos, o resultado final esperado (um mapa consistente) é equivalente, mas o modo assíncrono traz leve degradação de detalhe temporal para ganhar em robustez de tempo real. Adicionalmente, a biblioteca implementa um modo de operação apenas de odometria a laser (\textit{LiDAR odometry}), no qual é executada a mesma estimação de movimento por casamento de scans mas sem construir um mapa global – ou seja, sem um mapa prévio, o sistema atua como um odômetro local que realiza pequenos fechamentos de loop locais (útil para estimar movimento em tempo real quando não se deseja ainda um mapa completo). Esse modo pode ser entendido como uma forma degenerada de SLAM restrita a um mapa local temporário.
 
 % --------
     
@@ -178,23 +184,34 @@ Nas seções seguintes, serão apresentados os recursos e equipamentos utilizado
     
 \section{Detalhes da Implementação do Projeto}
 
-    Para este projeto foi necessário realizar uma pequena modificação na estrutura do LIMO, modificando o local do seu sensor laser, que normalmente encontra-se montado na parte posterior no robô, possibilitando apenas o uso de $180\degree$ do campo de visão do LiDAR. Criou-se então uma plataforma para montagem do sensor laser na parte superior do corpo do robô, a fim de possibilitar o uso completo dos $360\degree$ do campo de visão do LiDAR do robô (Ver Figura \ref{fig:LIMO_Experimento}). 
-
+    Para este projeto foi necessário realizar uma pequena modificação na estrutura do LIMO, modificando o local do seu sensor laser, que normalmente encontra-se montado na parte anterior do robô, possibilitando apenas o uso de $180\degree$ do campo de visão do LiDAR. Criou-se então uma plataforma para montagem do sensor laser na parte superior do corpo do robô, a fim de possibilitar o uso completo dos $360\degree$ do campo de visão do LiDAR do robô (Ver Figura \ref{fig:LIMO_Experimento}). 
+    
     \begin{figure}[htb]
         \centering
-        \caption{Robô LIMO Modificado para uso do campo de visão total do LiDAR}
-        \includegraphics[width=0.8\linewidth]{img/LIMO_EXPERIMENTO.jpg}
+        \caption{Modificação realizada no robô móvel para uso do campo de visão total do LiDAR. À esquerda, imagem do LIMO com o sensor na posição original. À direita, imagem do robô com a estrutura modificada.}
+
+        \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+            \includegraphics[height=0.94\textwidth, width=\textwidth]{img/LIMO_LiDAR_2.pdf}
+            
+        \end{subfigure}
+        \hspace{0.03\textwidth}
+        \begin{subfigure}[b]{0.45\textwidth}
+        \centering
+            \includegraphics[trim= 700 400 700 150, clip, width=\textwidth]{img/LIMO_EXPERIMENTO.jpg}
+        \end{subfigure}
+        
         \source
         \label{fig:LIMO_Experimento}
     \end{figure}
 
     Para realizar o projeto, primeiro foi implementado o controlador para o robô diferencial, seguindo a lei de controle da Equação \ref{eq:ff_fb_law_limo}. O código foi implementado em linguagem C++ e utilizando as bibliotecas do ROS para obtenção dos dados de posição e publicação dos comandos de velocidade.
     
-    Também foi implementado um código para publicação da trajetória a ser seguida pelo robô, que calcula os pontos da trajetória em função da frequência de publicação e da velocidade desejada para a trajetória. Este código publica as poses objetivos no tópico /goal e também publica o caminho inteiro em um outro tópico, que pode ser utilizado para tarefas de seguimento de caminho ou para visualização da trajetória e/ou caminho desejado. Todos os códigos implementados estão disponíveis no \textit{Github} \cite{site:Github-SLAM_Research}.
+    Também foi implementado um código para publicação da trajetória a ser seguida pelo robô, que calcula os pontos da trajetória em função da frequência de publicação e da velocidade desejada para a trajetória. Este código publica as poses objetivos no tópico \textit{/goal} e também publica o caminho inteiro em um outro tópico, que pode ser utilizado para tarefas de seguimento de caminho ou para visualização da trajetória e/ou caminho desejado. Todos os códigos implementados estão disponíveis no \textit{Github} \cite{site:Github-SLAM_Research}.
 
     Para a utilização da SLAM Toolbox para este projeto, realizou-se uma cópia do repositório da SLAM Toolbox\cite{site:Slam_toolbox}. Como utilizamos o ROS 1 no LAB-AIR foi necessário modificar o código da SLAM Toolbox para que a pose do robô obtida a partir do escaneamento do LiDAR fosse publicada também no modo de Localização. A SLAM Toolbox somente publicava as poses corretamente na versão para o ROS 2.
 
-    A SLAM Toolbox expõe ao usuário diversos parâmetros de configuração que podem ser modificados para buscar o melhor desempenho do sistema. Para buscar o melhor funcionamento do sistema junto ao controle utilizado e obter melhores resultados, foi necessário modificar estes parâmetros e realizar diversos testes, rodando diversas vezes o código em modo de slam online e localização para obtenção de resultados mais satisfatórios para o projeto.
+    A SLAM Toolbox expõe ao usuário diversos parâmetros de configuração que podem ser modificados para buscar o melhor desempenho do sistema. Para buscar o melhor funcionamento do sistema junto ao controle utilizado e obter melhores resultados, foi necessário modificar estes parâmetros e realizar diversos testes, rodando diversas vezes o código em modo de slam online e localização para obtenção de resultados mais satisfatórios para o projeto. Maiores informações sobre os parâmetros expostos pela biblioteca estão disponíveis no \textit{Github} da biblioteca \cite{site:Slam_toolbox}.
     
     Em específico, notou-se durante a implementação do projeto e durante os testes que o robô utilizado apresentava muitos erros de odometria, devido ao problema de deslizamento das rodas no chão, principalmente ao realizar curvas no modo diferencial. Portanto, para obter melhores resultados utilizando a SLAM Toolbox modificou-se a função utilizada para rejeitar valores discrepantes (\textit{outliers}) para uma função \textit{HuberLoss} através do parâmetro \textit{ceres\_loss\_function}.
 

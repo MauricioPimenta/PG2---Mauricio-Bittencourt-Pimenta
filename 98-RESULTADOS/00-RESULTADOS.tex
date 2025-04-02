@@ -6,7 +6,6 @@
 
 
 \label{Cap04}
-\section{Introdução}
 
 % \add{
 % \textbf{1. \txr{Objetivo do capitulo}}
@@ -19,59 +18,96 @@
 
 
 % ------------------ INICIO ----------------------
-Utilizou-se a princípio a biblioteca SLAM Toolbox para criação de um mapa detalhado do laboratório, fazendo o robô percorrer diversos caminhos no interior do laboratório para que o mapa gerado fosse de alta qualidade e representativo do ambiente de testes. O mapa gerado por este método foi salvo e utilizado como mapa para os experimentos de localização do robô utilizando o modo de Localização da SLAM Toolbox (ver Figura \ref{fig:Exp_mapa_LABAIR}).
+Utilizou-se a princípio a biblioteca SLAM Toolbox para criação de um mapa detalhado do laboratório, fazendo o robô percorrer diversos caminhos no interior do laboratório para que o mapa gerado fosse de alta qualidade e representativo do ambiente de testes. O mapa gerado por este método foi salvo e utilizado como mapa para os experimentos de localização do robô utilizando o modo de Localização da SLAM Toolbox. A Figura \ref{fig:Exp_mapa_LABAIR} mostra o mapa gerado, onde os pontos vermelhos conectados por linhas azuis são os nós do grafo com as informações de poses e as linhas azuis são as arestas que definem as restrições entre as poses dos nós. Os pequenos quadrados vermelhos e laranjas no mapa são os pontos medidos pelo sensor LiDAR.
 
 \begin{figure}[htb]
     \centering
     \caption{Mapa do LAB-AIR gerado com a SLAM Toolbox, mostrando os marcadores das posições e conexões do grafo de poses}
-    \includegraphics[width=0.5\linewidth]{img/mapa_localizacao.png}
+    \includegraphics[width=0.8\linewidth]{img/mapa_localizacao.png}
     \source
     \label{fig:Exp_mapa_LABAIR}
 \end{figure}
 
-Para verificar o desempenho da tarefa de localização usando a SLAM Toolbox, utilizou-se o controlador definido na Seção \ref{sec:Controle_Dif_LIMO} para guiar o robô em dois tipos diferentes de trajetórias, uma caracterizada por caminhos lineares entre posições específicas no referencial inercial do laboratório, e uma trajetória em formato de Lemniscata de Bernoulli. As duas trajetórias podem ser vistas na Figura \ref{fig:exp_trajetorias}. A trajetória que foi denominada como \ASPASDUPLAS{CASA} foi definida como retas ligando os pontos adjacentes do vetor de pontos: 
+Para verificar o desempenho da tarefa de localização usando a SLAM Toolbox, utilizou-se o controlador definido na Seção \ref{sec:Controle_Dif_LIMO} para guiar o robô em dois tipos diferentes de trajetórias, uma caracterizada por caminhos lineares entre posições específicas no referencial inercial do laboratório, e uma trajetória em formato de Lemniscata de Bernoulli. As duas trajetórias podem ser vistas na Figura \ref{fig:exp_trajetorias}. A trajetória que foi denominada como \ASPASDUPLAS{CASA} foi definida como retas ligando os pontos adjacentes do vetor de pontos mostrados na Tabela \ref{tab:traj_CASA} abaixo.
 
-\begin{equation}
-    \begin{bmatrix}
-        -1.5 & \phantom{-}1.5\\ 
-        -1.5 & -1.5 \\ 
-        \phantom{-}1.5 & \phantom{-}1.5 \\ 
-         \phantom{-}1.5 & -1.5 \\ 
-        -1.5 & \phantom{-}1.5 \\
-        \phantom{-}1.5 & \phantom{-}1.5 \\
-        \phantom{-}2.0 & \phantom{-}0.0 \\
-        \phantom{-}1.5 & -1.5 \\
-        -1.5 & -1.5
-    \end{bmatrix}
-\end{equation}
+\begin{table}
+    \centering
+    \caption{Pontos que definem a trajetória \ASPASDUPLAS{CASA} usada nos experimentos.}
+    \setlength{\extrarowheight}{2pt}
+    \begin{tabular}{|c|cc|}
+        \hline
+        n & x & y \\
+        \hline
+        1 & -1.5 & \phantom{-}1.5\\
+        2 & -1.5 & -1.5 \\ 
+        3 & \phantom{-}1.5 & \phantom{-}1.5 \\ 
+        4 &  \phantom{-}1.5 & -1.5 \\ 
+        5 & -1.5 & \phantom{-}1.5 \\
+        6 &  \phantom{-}1.5 & \phantom{-}1.5 \\
+        7 &  \phantom{-}2.0 & \phantom{-}0.0 \\
+        8 &  \phantom{-}1.5 & -1.5 \\
+        9 &  -1.5 & -1.5 \\ \hline
+    \end{tabular}
+    
+    \label{tab:traj_CASA}
+    \source
+\end{table}
 
-\begin{figure}
+
+% \begin{equation}
+%     \begin{bmatrix}
+%         -1.5 & \phantom{-}1.5\\ 
+%         -1.5 & -1.5 \\ 
+%         \phantom{-}1.5 & \phantom{-}1.5 \\ 
+%          \phantom{-}1.5 & -1.5 \\ 
+%         -1.5 & \phantom{-}1.5 \\
+%         \phantom{-}1.5 & \phantom{-}1.5 \\
+%         \phantom{-}2.0 & \phantom{-}0.0 \\
+%         \phantom{-}1.5 & -1.5 \\
+%         -1.5 & -1.5
+%     \end{bmatrix}
+% \end{equation}
+
+\begin{figure}[htb]
     \centering
     \caption{Trajetórias Desejadas dos Experimentos}
     \begin{subfigure}[b]{0.4\textwidth}
         \includegraphics[width=\textwidth]{img/Trajetoria_Lemniscata.png}
         \caption{Trajetoria em Lemniscata de Bernoulli}
     \end{subfigure}
+    \hspace{0.1\textwidth}
     \begin{subfigure}[b]{0.4\textwidth}
-        \includegraphics[width=\textwidth]{img/Trajetoria_Casa.png}
-        \caption{Trajetória Linear}
+        \includegraphics[width=\textwidth]{img/Trajetoria_Casa_num.pdf}
+        \caption{Trajetória Linear \ASPASDUPLAS{CASA}}
     \end{subfigure}
     \label{fig:exp_trajetorias}
     \sourceParbox[0.8\linewidth]
 \end{figure}
 
+A segunda trajetória realizada no segundo e quarto experimentos foi uma trajetória em formato de lemniscata de Bernoulli, caracterizada pelas equações:
+
+\begin{equation}
+\label{eq:lemniscata}
+    \bs{x}_{des}=\begin{bmatrix} x_{des}=r_x\cos{\omega t} \\ y_{des}=r_y\sin{2 \omega t} \end{bmatrix}
+\end{equation}
+
+com $r_x = 1.5m$, $r_y = 1.0m$ e $\omega = 0.20\ rad/s$. A velocidade desejada da trajetória é obtida pela derivada da equação anterior, ou seja:
+
+\begin{equation}
+    \dot{\bs{x}}_{des}=\begin{bmatrix} \dot{x}_{des} = -r_x \omega \sin{\omega t} \\
+    \dot{y}_{des}=r_y 2\omega\cos{2 \omega t} \end{bmatrix}
+\end{equation}
+
 Para avaliar o desempenho do sistema com o referencial do OptiTrack realizou-se 4 experimentos de controle de trajetória para cada uma das duas trajetórias definidas, usando primeiro informações provindas do sistema Optitrack para obter a pose do robô e posteriormente utilizando apenas as poses obtidas pela SLAM Toolbox. Os dois primeiros experimentos serviram para analisar o desempenho do controlador implementado utilizando o sistema de referência para as duas trajetórias, a fim de obter o desempenho do controlador para o sistema ideal.
 
-Em todos os 4 experimentos armazenou-se tanto os dados de pose provindas do OptiTrack quanto da SLAM Toolbox, os sinais de controle calculados tanto com os dados de pose do OptiTrack quanto da SLAM Toolbox e e a trajetória a ser seguida a fim de gerar os gráficos apresentados neste capítulo. A pose inicial do robô foi resetada ao início de cada experimento, mantendo o ponto $(x,y)=(0.0 ,0.0)$ do referencial inercial do laboratório como posição inicial e orientação inicial sempre paralela ao eixo $X$ ($\psi = 0\degree$).
+Em todos os 4 experimentos armazenou-se tanto os dados de pose provindas do OptiTrack quanto da SLAM Toolbox, os sinais de controle calculados tanto com os dados de pose do OptiTrack quanto da SLAM Toolbox e a trajetória a ser seguida a fim de gerar os gráficos apresentados neste capítulo. A pose inicial do robô foi resetada ao início de cada experimento, mantendo o ponto $(x,y)=(0.0 ,0.0)$ do referencial inercial do laboratório como posição inicial e orientação inicial sempre paralela ao eixo $X$ ($\psi = 0\degree$).
 
-O primeiro experimento realizado foi o controle de trajetórias lineares que formam uma figura de casa. A trajetória realizada e a trajetória desejada podem ser vistas na Figura \ref{fig:Exp1_Trajetoria_VRPN_LINEAR}. Pode-se notar que a trajetória realizada pelo robô segue em grande parte a trajetória desejada, com alguns erros de seguimento da trajetória em pontos mais críticos de viradas mais bruscas e no início do experimento, quando o robô sai da origem do plano cartesiano e corre atrás do ponto da trajetória que está em movimento. A Figura \ref{fig:Exp1_XY_vs_tempo} mostra a evolução das posições obtidas do OptiTrack (\ASPASIMPLES{vrpn}) e da SLAM Toolbox(\ASPASIMPLES{slam} durante o experimento.
+O primeiro experimento realizado foi o controle de trajetórias lineares que formam uma figura de casa, utilizando a pose provinda do sistema OptiTrack para executar o controle. A trajetória realizada e a trajetória desejada podem ser vistas na Figura \ref{fig:Exp1_Trajetoria_VRPN_LINEAR}. Pode-se notar que a trajetória realizada pelo robô segue em grande parte a trajetória desejada, com alguns erros de seguimento da trajetória em pontos mais críticos de viradas mais bruscas e no início do experimento, quando o robô sai da origem do plano cartesiano e corre atrás do ponto da trajetória que está em movimento. A Figura \ref{fig:Exp1_XY_vs_tempo} mostra a evolução das posições obtidas do OptiTrack (\ASPASIMPLES{vrpn}) e da SLAM Toolbox(\ASPASIMPLES{slam} durante o experimento.
 
 \begin{figure}[htb]
     \centering
     \caption{Experimento 1: Trajetoria Realizada}
-    \resizebox{0.9\linewidth}{!}{
-    \input{img/Resultados/Exp1_VRPN_Control_LINEAR/PGF_TIKZ/Trajetoria_vrpn.pgf}
-    }
+    \includegraphics[width=0.8\linewidth]{img/Resultados/Exp1_VRPN_Control_LINEAR/Trajetoria.pdf}
     \label{fig:Exp1_Trajetoria_VRPN_LINEAR}
     \source
 \end{figure}
@@ -99,7 +135,7 @@ O primeiro experimento realizado foi o controle de trajetórias lineares que for
 \begin{figure}[htb]
     \centering
     \caption{Evolução das coordenadas $x$ e $y$ no Experimento 1}
-    \includegraphics[width=\linewidth]{img/Resultados/Exp1_VRPN_Control_LINEAR/Position_v_time.pdf}
+    \includegraphics[width=\linewidth]{img/Resultados/Exp1_VRPN_Control_LINEAR/Exp1_pose_tempo.pdf}
     \sourceParbox[\linewidth]
     \label{fig:Exp1_XY_vs_tempo}
 \end{figure}
@@ -121,26 +157,14 @@ O primeiro experimento realizado foi o controle de trajetórias lineares que for
 %     \source
 % \end{figure}
 
-A segunda trajetória realizada no segundo e quarto experimentos foi uma trajetória em formato de lemniscata de Bernoulli, caracterizada pelas equações:
 
-\begin{equation}
-\label{eq:lemniscata}
-    \bs{x}_{des}=\begin{bmatrix} x_{des}=r_x\cos{\omega t} \\ y_{des}=r_y\sin{2 \omega t} \end{bmatrix}
-\end{equation}
-
-com $r_x = 1.5m$, $r_y = 1.0m$ e $\omega = 0.20\ Rad/s$. A velocidade desejada da trajetória é obtida pela derivada da equação anterior:
-
-\begin{equation}
-    \dot{\bs{x}}_{des}=\begin{bmatrix} \dot{x}_{des} = -r_x \omega \sin{\omega t} \\
-    \dot{y}_{des}=r_y 2\omega\cos{2 \omega t} \end{bmatrix}
-\end{equation}
 
 A Figura \ref{fig:Exp2_TrajetoriaVRPN} mostra o trajeto realizado pelo robô em comparação com a trajetória desejada no Experimento 2 e a Figura \ref{fig:Exp2_Comparacao_Posicao_v_tempo} mostra a evolução das posições $x$ e $y$ do robô durante o experimento. Além das posições obtidas pelo OptiTrack (denominadas no gráfico de \ASPASIMPLES{vrpn}, também é mostrada a posição obtida pela SLAM Toolbox (denominada de \ASPASIMPLES{slam} nos gráficos).
 
 \begin{figure}[htb]
     \centering
     \caption{Experimento 2 - Trajetória desejada e realizada pelo robô}
-    \includegraphics[width=0.8\linewidth]{img/Resultados/Exp2_VRPN_Control_LEMNISCATA/Trajetoria_VRPN.pdf}
+    \includegraphics[width=0.8\linewidth]{img/Resultados/Exp2_VRPN_Control_LEMNISCATA/Trajetoria.pdf}
     \source
     \label{fig:Exp2_TrajetoriaVRPN}
 \end{figure}
@@ -148,21 +172,18 @@ A Figura \ref{fig:Exp2_TrajetoriaVRPN} mostra o trajeto realizado pelo robô em 
 \begin{figure}[htb]
     \centering
     \caption{Experimento 2 - Comparação entre as posições registradas pelo OptiTrack e pela SLAM Toolbox durante o experimento}
-    \includegraphics[width=0.8\linewidth]{img/Resultados/Exp2_VRPN_Control_LEMNISCATA/Position_Comparison.pdf}
+    \includegraphics[width=\linewidth]{img/Resultados/Exp2_VRPN_Control_LEMNISCATA/pose_tempo.pdf}
     \source
     \label{fig:Exp2_Comparacao_Posicao_v_tempo}
 \end{figure}
 
 
-As Figuras \ref{fig:Exp3_Trajetoria} e \ref{fig:Exp3_Posicao_Tempo} mostram os resultados do terceiro experimento realizado, utilizando a pose obtida da SLAM Toolbox para controle do robô na tarefa de seguimento da trajetória \ASPASDUPLAS{CASA}. Observa-se na \ref{fig:Exp3_Trajetoria} que o robô conseguiu seguir a trajetória desejada de modo satisfatório, porém com maiores erros de posição que no Experimento 1 (Figura \ref{fig:Exp1_Trajetoria_VRPN_LINEAR}) e um comportamento oscilatório em alguns trechos da trajetória.
-
-Na Figura \ref{fig:Exp3_Posicao_Tempo} mostra-se a evolução das posições no tempo, novamente com a posição equivalente ao sistema de câmeras OptiTrack aparecendo com o nome \ASPASIMPLES{vrpn} no gráfico e as posições obtidas da SLAM Toolbox com o nome \ASPASIMPLES{slam}. Nesta Figura também é possível notar o comportamento oscilatório durante o experimento, embora a diferença entre a posição do OptiTrack e da SLAM Toolbox não seja muito grande.
-
+As Figuras \ref{fig:Exp3_Trajetoria} e \ref{fig:Exp3_Posicao_Tempo} mostram os resultados do terceiro experimento realizado, utilizando a pose obtida da SLAM Toolbox para controle do robô na tarefa de seguimento da trajetória \ASPASDUPLAS{CASA}. Observa-se na Figura \ref{fig:Exp3_Trajetoria} que o robô conseguiu seguir a trajetória desejada de modo satisfatório, porém com maiores erros de posição que no Experimento 1 (Figura \ref{fig:Exp1_Trajetoria_VRPN_LINEAR}) e um comportamento oscilatório em alguns trechos da trajetória.
 
 \begin{figure}[htb]
     \centering
     \caption{Experimento 3: Trajetória desejada e realizada pelo robô}
-    \includegraphics[width=0.7\linewidth]{img/Resultados/Exp3_SLAM_Control_LINEAR/Trajetoria_Controller.pdf}
+    \includegraphics[width=0.7\linewidth]{img/Resultados/Exp3_SLAM_Control_LINEAR/trajetoria.pdf}
     \source
     \label{fig:Exp3_Trajetoria}
 \end{figure}
@@ -170,18 +191,22 @@ Na Figura \ref{fig:Exp3_Posicao_Tempo} mostra-se a evolução das posições no 
 \begin{figure}[htb]
     \centering
     \caption{Experimento 3: Comparação entre as posições registradas pelo OptiTrack e pela SLAM Toolbox durante o experimento}
-    \includegraphics[width=0.8\linewidth]{img/Resultados/Exp3_SLAM_Control_LINEAR/XY_Position_v_Time_ALL.png}
+    \includegraphics[width=\linewidth]{img/Resultados/Exp3_SLAM_Control_LINEAR/pose_tempo.pdf}
     \source
     \label{fig:Exp3_Posicao_Tempo}
 \end{figure}
 
 
-Os resultados do experimento 4 podem ser conferidos nas Figuras \ref{fig:Exp4_Trajetoria} e \ref{fig:Exp4_Posicao_Tempo}, em que a trajetória desejada foi a Lemniscata de Bernoulli da Equação \ref{eq:lemniscata}. Podemos notar um comportamento bastante oscilatório durante algumas etapas do experimento. A Figura \ref{fig:Exp4_Posicao_Tempo} mostra a evolução das posições durante o experimento.
+Na Figura \ref{fig:Exp3_Posicao_Tempo} mostra-se a evolução das posições no tempo, novamente com a posição equivalente ao sistema de câmeras OptiTrack aparecendo com o nome \ASPASIMPLES{vrpn} no gráfico e as posições obtidas da SLAM Toolbox com o nome \ASPASIMPLES{slam}. Nesta Figura também é possível notar o comportamento oscilatório durante o experimento, embora a diferença entre a posição do OptiTrack e da SLAM Toolbox não seja muito grande.
+
+
+
+Os resultados do experimento 4 podem ser conferidos nas Figuras \ref{fig:Exp4_Trajetoria} e \ref{fig:Exp4_Posicao_Tempo}, em que a trajetória desejada foi a Lemniscata de Bernoulli da Equação \ref{eq:lemniscata}. Para este experimento em específico, definiu-se um tempo de experimento mais longo, de 15 minutos. Assim, podemos verificar o resultado da tarefa de localização do robô usando apenas a pose provinda da SLAM Toolbox como \textit{feedback} de controle durante um longo tempo. Apesar de notar-se um comportamento bastante oscilatório durante algumas etapas do experimento, o robô realizou a trajetória desejada durante todo o tempo do experimento, o que não seria possível se fosse utilizada apenas os dados da odometria do robô para executar a tarefa. A Figura \ref{fig:Exp4_Posicao_Tempo} mostra a evolução das posições durante o experimento.
 
 \begin{figure}[htb]
     \centering
     \caption{Experimento 4: Trajetória desejada e realizada pelo robô}
-    \includegraphics[width=0.8\linewidth]{img/Resultados/Exp4_SLAM_Control_LEMNISCATA/Trajetoria_SLAM.pdf}
+    \includegraphics[width=\linewidth]{img/Resultados/Exp4_SLAM_Control_LEMNISCATA/Trajetoria.pdf}
     \source
     \label{fig:Exp4_Trajetoria}
 \end{figure}
@@ -190,7 +215,7 @@ Os resultados do experimento 4 podem ser conferidos nas Figuras \ref{fig:Exp4_Tr
 \begin{figure}[htb]
     \centering
     \caption{Experimento 4: Comparação entre as posições registradas pelo OptiTrack e pela SLAM Toolbox durante o experimento}
-    \includegraphics[width=\linewidth]{img/Resultados/Exp4_SLAM_Control_LEMNISCATA/Position_v_time_Comparison.pdf}
+    \includegraphics[width=\linewidth]{img/Resultados/Exp4_SLAM_Control_LEMNISCATA/pose_tempo.pdf}
     \label{fig:Exp4_Posicao_Tempo}
     \source
 \end{figure}
